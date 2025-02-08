@@ -19,9 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forgot Password'),
-      ),
+      appBar: AppBar(title: const Text('Forgot Password')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -29,9 +27,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-              ),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

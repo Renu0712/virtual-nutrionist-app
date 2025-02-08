@@ -67,9 +67,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   labelText: 'Password',
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: Icon(_isPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
                     onPressed: () {
                       setState(() {
                         _isPasswordVisible = !_isPasswordVisible;
@@ -86,9 +88,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   labelText: 'Confirm Password',
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: Icon(_isConfirmPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
+                    icon: Icon(
+                      _isConfirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
                     onPressed: () {
                       setState(() {
                         _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
@@ -110,7 +114,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
+                      builder: (context) => const LoginScreen(),
+                    ),
                     (route) => false,
                   );
                 },

@@ -10,6 +10,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:myapp/screens/signup_screen.dart';
+import 'package:myapp/screens/chat_screen.dart';
 
 import 'forgot_password.dart';
 
@@ -24,30 +25,32 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Email',
-              ),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 20),
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Password',
-              ),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Handle login logic
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChatScreen(),
+                  ),
+                  (route) =>
+                      false, // This predicate ensures all routes are removed
+                );
               },
               child: const Text('Login'),
             ),
