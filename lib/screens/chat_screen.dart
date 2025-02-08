@@ -1,3 +1,6 @@
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:1328099250.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2872592354.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2596247805.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:332226529.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:3939809719.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:3750218317.
@@ -15,6 +18,7 @@
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:1453192911.
 
 import 'package:flutter/material.dart';
+
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -69,7 +73,38 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      appBar: AppBar(title: const Text('Chat'),
+       ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Options',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: const Text('Diet Plan'),
+                onTap: () {
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => const DietPlanScreen()));
+                },
+              ),
+              ListTile(
+                title: const Text('Workout Plan'),
+                onTap: () {
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPlanScreen()));
+                },
+              ),
+            ],
+          )),
       body: Column(
         children: <Widget>[
           Flexible(
