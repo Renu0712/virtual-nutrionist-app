@@ -1,3 +1,5 @@
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:1580738497.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:3706483894.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:1328099250.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:2872592354.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:2596247805.
@@ -17,7 +19,10 @@
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:3665087815.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:1453192911.
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -27,20 +32,40 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final gemini = Gemini.instance;
   final List<ChatMessage> _messages = [
-    ChatMessage(text: "Hello!", sender: "user"),
-    ChatMessage(text: "Hi there!", sender: "sender"),
-    ChatMessage(text: "How are you?", sender: "user"),
-    ChatMessage(text: "I'm good, thanks!", sender: "sender"),
+    
   ];
 
   final TextEditingController _textController = TextEditingController();
 
   void _handleSubmitted(String text) {
     _textController.clear();
+
     setState(() {
       _messages.insert(0, ChatMessage(text: text, sender: "user"));
     });
+    gemini
+        .chat( _messages.reversed.map((e) =>
+          Content(
+            parts: [
+              Part.text(
+              e.text,
+              ),
+            ],
+          role: e.sender,
+        )
+    ).toList())
+        .then((value) {
+          if (value != null && value.output != null) {
+            setState(() {
+              _messages.insert(0, ChatMessage(text: value.output!, sender: "model"));
+            });
+          }
+
+          log(value?.output ?? 'without output');
+        })
+        .catchError((e) => log('chat', error: e));
   }
 
   Widget _buildTextComposer() {
@@ -141,16 +166,18 @@ class ChatBubble extends StatelessWidget {
             isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
           if (!isUser) const CircleAvatar(child: Text("S")),
-          Container(
-            margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              color: isUser ? Colors.blue : Colors.grey[300],
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Text(
-              message.text,
-              style: TextStyle(color: isUser ? Colors.white : Colors.black),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: isUser ? Colors.blue : Colors.grey[300],
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                message.text,
+                style: TextStyle(color: isUser ? Colors.white : Colors.black),
+              ),
             ),
           ),
           if (isUser) const CircleAvatar(child: Text("U")),
