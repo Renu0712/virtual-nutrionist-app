@@ -45,9 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Handle login logic
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const ChatScreen(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const ChatScreen()),
                   (route) =>
                       false, // This predicate ensures all routes are removed
                 );

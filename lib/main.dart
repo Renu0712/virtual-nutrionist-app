@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 
+import 'screens/demo_ai_screen.dart';
 import 'screens/signup_screen.dart';
 
+const apiKey = '--';
 void main() {
+  Gemini.init(apiKey: apiKey);
   runApp(const MyApp());
 }
 
@@ -33,7 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SignUpScreen(),
+      home: const DemoAIScreen(),
     );
   }
 }
