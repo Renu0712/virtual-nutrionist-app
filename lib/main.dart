@@ -1,13 +1,17 @@
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:944380225.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2862291851.
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:myapp/screens/splash_screen.dart';
 
 import 'screens/chat_screen.dart';
 import 'screens/demo_ai_screen.dart';
 import 'screens/signup_screen.dart';
 
 const apiKey = '--';
-void main() {
-  Gemini.init(apiKey: apiKey);
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -17,6 +21,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    const primaryColor = Color(0xFF4CAF50); // Green
+    const secondaryColor = Color(0xFF8BC34A); // Light Green
+    const accentColor = Color(0xFFFFC107); // Amber
+    const backgroundColor = Color(0xFFF5F5F5); // Light Gray
+    const textColor = Color(0xFF212121); // Dark Gray
+    const errorColor = Color(0xFFB00020); // Red
+    const successColor = Color(0xFF388E3C); // Dark Green
+    const warningColor = Color(0xFFFFA000); // Orange
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -35,10 +49,21 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.light(
+          primary: primaryColor,
+          secondary: secondaryColor,
+          tertiary: accentColor,
+          surface: backgroundColor,
+          error: errorColor,
+          onPrimary: primaryColor,
+          onSecondary: textColor,
+          onSurface: textColor,
+          onError: Colors.white,
+
+        ),
         useMaterial3: true,
       ),
-      home: const ChatScreen(),
+      home:  SplashScreen(),
     );
   }
 }
