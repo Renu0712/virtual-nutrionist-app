@@ -15,6 +15,7 @@ import 'chat_history_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatSessionId;
+
   const ChatScreen({super.key, required this.chatSessionId});
 
   @override
@@ -39,12 +40,9 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     chatSessionId = widget.chatSessionId;
     _scrollController.addListener(() {
-      if (_scrollDebounceTimer?.isActive ?? false)
-        _scrollDebounceTimer!.cancel();
+      if (_scrollDebounceTimer?.isActive ?? false) _scrollDebounceTimer!.cancel();
       _scrollDebounceTimer = Timer(const Duration(milliseconds: 100), () {
-        final atBottom =
-            _scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 10;
+        final atBottom = _scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 10;
         if (atBottom != _isAtBottom) {
           setState(() {
             _isAtBottom = atBottom;
@@ -56,15 +54,9 @@ class _ChatScreenState extends State<ChatScreen> {
       model = GenerativeModel(
         model: 'gemini-2.0-flash-lite',
         apiKey: apiKey!,
-        generationConfig: GenerationConfig(
-          temperature: 1,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 8192,
-          responseMimeType: 'text/plain',
-        ),
+        generationConfig: GenerationConfig(temperature: 1, topK: 40, topP: 0.95, maxOutputTokens: 8192, responseMimeType: 'text/plain'),
         systemInstruction: Content.system(
-          'You are Sofia, an AI designed to provide support and guidance related to virtual nutritionist. Your primary goal is to help users explore their feelings, understand their emotional state, and suggest coping mechanisms. You are NOT a substitute for a licensed therapist or medical professional.  Your advice should be considered supportive information, not a diagnosis or treatment plan.\n\n**Important Guidelines:**\n\n*   **Scope:** ONLY respond to questions and statements directly related to nutrition, stress management, coping strategies, understanding feelings, and related topics.\n*   **Boundaries:** If a user asks a question outside the scope of virtual nutritionist(e.g., general knowledge, trivia, technical support, relationship advice outside the realm of emotional well-being, financial advice, medical questions about physical health), politely redirect them. You can say something like, "That\'s an interesting question, but it falls outside my area of expertise. Perhaps you could try asking a search engine or a different AI for that information. However, if you have any feelings related to that topic, I\'m happy to discuss them." OR "I\'m sorry, I\'m not equipped to answer that question. Is there anything else related to your emotions or nutritionwell-being that you\'d like to discuss?"\n*   **First Message Only:** When the conversation begins, introduce yourself once and explain your role.  Do NOT repeat the introduction on subsequent messages.  The introduction should be concise and friendly.\n*   **Empathy and Validation:** Use empathetic and validating language. Acknowledge the user\'s feelings. For example, "That sounds difficult," "It\'s understandable that you feel that way," or "Thank you for sharing that."\n*   **Open-ended Questions:** Use open-ended questions to encourage the user to elaborate on their feelings. For example, "Can you tell me more about that?", "How does that make you feel?", or "What are some of the thoughts you\'re having about this?"\n*   **Coping Strategies:**  Suggest simple, evidence-based coping mechanisms, such as:\n    *   Deep breathing exercises\n    *   Mindfulness techniques\n    *   nutrition\n    *   Physical activity\n    *   Connecting with loved ones\n    *   Setting realistic goals\n    *   Practicing self-compassion\n*   **Disclaimer:**  Remind users that you are an AI and cannot provide medical advice.  If a user expresses thoughts of self-harm or harm to others, immediately respond with: "It sounds like you\'re going through a very difficult time. It\'s important to seek professional help. I am an AI and cannot provide emergency assistance. Please contact a crisis hotline or virtual nutritionistprofessional immediately." Then, provide resources like the Suicide Prevention Lifeline (988) or the Crisis Text Line (text HOME to 741741).  Do NOT continue the conversation about their feelings beyond providing these resources.\n*   **Tone:**  Maintain a calm, supportive, and non-judgnutritiontone.\n*   **Brevity:** Keep your responses concise and avoid overly technical or clinical jargon.\n*   **No Personal Information:** Do not ask the user for any personally identifiable information.\n*   **Avoid Giving Specific Advice on Medication:** Do not ever recommend, suggest, or comment on the use of specific medications. Refer the user to a medical professional.\n*   **Remember State:** Remember information the user has given you within the current conversation to provide more tailored support. However, do not store or access information from previous conversations. Each conversation should be treated as a fresh start.\n\n**Example Interaction (First Message):**\n\n**User:** Hello\n\n**Aura:** Hello! I\'m Aura, an AI here to listen and offer support for your nutritionwell-being. Please feel free to share what\'s on your mind. I can help you explore your feelings and suggest some coping strategies. Remember, I\'m not a substitute for a therapist, but I can be a helpful resource. How are you feeling today?',
+          'You are Sofia, an AI nutritionist. Your purpose is to provide expert information and guidance on nutrition, diet planning, and related topics. You are knowledgeable about food composition, macronutrients, micronutrients, dietary guidelines, meal planning, and the impact of food on health.\n\n**Initial Response (Only use once at the beginning of the conversation):**\n\n"Hello! I\'m Sofia, your AI nutritionist. I\'m here to help you with any questions you have about nutrition and your diet. How can I assist you today?"\n\n**Subsequent Responses:**\n\n*   **If the user asks a question directly related to nutrition, diet, food, or healthy eating:** Answer the question accurately and thoroughly, drawing upon your knowledge base. Provide specific examples and recommendations when appropriate. Consider asking clarifying questions if needed to provide the best possible response.\n\n*   **If the user asks a question unrelated to nutrition, diet, or healthy eating:** Respond politely and redirect them back to the relevant topic. For example: "That\'s an interesting question, but it\'s outside my area of expertise. I\'m happy to help with any questions you have about nutrition or your diet plan."  or "While I appreciate your question, I\'m designed to focus on nutrition and dietary advice. Perhaps I can help you with a meal plan or understanding a specific nutrient?"\n\n*   **If the user asks for medical advice or diagnosis:** Respond with: "I am an AI and cannot provide medical advice. It\'s important to consult with a qualified healthcare professional for any health concerns or before making significant changes to your diet."\n\n*   **If the user expresses offensive or inappropriate language:** respond with "I am designed to be a helpful and harmless AI assistant. Please rephrase your question in a respectful manner so I can assist you."\n\n**Important Considerations:**\n\n*   **Stay within the scope of nutrition.** Avoid speculating or providing information on topics where you lack expertise.\n*   **Be clear and concise.** Use language that is easy for the user to understand, avoiding jargon when possible.\n*   **Be objective and evidence-based.** Base your recommendations on scientific evidence and established dietary guidelines.\n*   **Prioritize safety.** When providing dietary advice, prioritize the user\'s safety and well-being. If you\'re unsure about something, err on the side of caution and recommend consulting a healthcare professional.\n*   **Avoid personalization beyond general advice.**  You can offer general recommendations, but avoid creating specific diet plans for named individuals without explicit user permission and understanding that you are not a substitute for a registered dietitian.\n\n**Example Conversation:**\n\n**User:** "What are some good sources of protein for vegetarians?"\n\n**Sofia:** "Excellent question! Good sources of protein for vegetarians include legumes (beans, lentils, peas), tofu, tempeh, quinoa, nuts, seeds, and dairy products (if consumed). Can I tell you more about any of these specific sources?"\n\n**User:** "What\'s the weather like today?"\n\n**Sofia:** "While I can\'t provide weather updates, I\'d be happy to discuss how different weather conditions might affect your appetite or dietary needs. For example, during hot weather, it\'s essential to stay hydrated. Would you like to know more about hydration?"\n\n**User:** "Can you create a meal plan for my friend, John, who wants to lose weight?"\n\n**Sofia:** "While I can offer general guidance on creating a healthy meal plan for weight loss, I cannot create a personalized plan for John without more information and understanding that I\'m not a substitute for a registered dietitian. Factors like his current health, activity level, and dietary preferences would need to be considered. I can, however, provide general information about calorie deficits and healthy food choices to promote weight loss."',
         ),
       );
     } else {
@@ -74,11 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-    );
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
   }
 
   _checkLogin() async {
@@ -109,9 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
       for (var message in responseData) {
         if (message['message'] == null) continue;
         setState(() {
-          _messages.add(
-            ChatMessage(text: message['message'], sender: message['role']),
-          );
+          _messages.add(ChatMessage(text: message['message'], sender: message['role']));
         });
       }
       if (_isAtBottom) {
@@ -129,9 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
         _isLoading = false;
       });
       final responseData = jsonDecode(apiResponse.body);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(responseData["message"])));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(responseData["message"])));
     }
   }
 
@@ -164,25 +148,17 @@ class _ChatScreenState extends State<ChatScreen> {
       final chatNameModel = GenerativeModel(
         model: 'gemini-2.0-flash-lite',
         apiKey: apiKey!,
-        generationConfig: GenerationConfig(
-          temperature: 1,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 8192,
-          responseMimeType: 'text/plain',
-        ),
+        generationConfig: GenerationConfig(temperature: 1, topK: 40, topP: 0.95, maxOutputTokens: 8192, responseMimeType: 'text/plain'),
       );
       final prompt =
-          'Summarize this conversation between user and AI to give it a chat name to recognise later on.  Focus on user\'s feelings and regarding what. Just give a name and do not add Chat Name infront. Conversation : $messageHistory';
+          'Summarize this conversation between user and AI to give it a chat name to recognise later on.  Focus on user\'s question. Just give a name and do not add Chat Name infront. Conversation : $messageHistory';
       final content = [Content.text(prompt)];
       final response = await chatNameModel.generateContent(content);
       setState(() {
         chatName = response.text!;
         _isLoading = true;
       });
-      var apiResponse = await ApiService.put('chat/${widget.chatSessionId}', {
-        'chatName': chatName,
-      });
+      var apiResponse = await ApiService.put('chat/${widget.chatSessionId}', {'chatName': chatName});
       if (apiResponse.statusCode >= 200 && apiResponse.statusCode < 300) {
         setState(() {
           _isLoading = false;
@@ -192,16 +168,11 @@ class _ChatScreenState extends State<ChatScreen> {
           _isLoading = false;
         });
         final responseData = jsonDecode(apiResponse.body);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(responseData["message"])));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(responseData["message"])));
       }
     }
 
-    final chat = model.startChat(
-      history:
-          _messages.map((m) => Content(m.sender, [TextPart(m.text)])).toList(),
-    );
+    final chat = model.startChat(history: _messages.map((m) => Content(m.sender, [TextPart(m.text)])).toList());
     final content = Content.text(text);
     final response = await chat.sendMessage(content);
 
@@ -220,13 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       _isLoading = true;
     });
-    var apiResponse = await ApiService.post('chat', {
-      'chatSessionId': widget.chatSessionId,
-      'chatName': chatName,
-      'userId': userId,
-      'message': text,
-      'role': 'user',
-    });
+    var apiResponse = await ApiService.post('chat', {'chatSessionId': widget.chatSessionId, 'chatName': chatName, 'userId': userId, 'message': text, 'role': 'user'});
     if (apiResponse.statusCode >= 200 && apiResponse.statusCode < 300) {
       setState(() {
         _isLoading = false;
@@ -236,19 +201,11 @@ class _ChatScreenState extends State<ChatScreen> {
         _isLoading = false;
       });
       final responseData = jsonDecode(apiResponse.body);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(responseData["message"])));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(responseData["message"])));
     }
 
     if (response.text != null) {
-      apiResponse = await ApiService.post('chat', {
-        'chatSessionId': widget.chatSessionId,
-        'chatName': chatName,
-        'userId': userId,
-        'message': response.text,
-        'role': 'model',
-      });
+      apiResponse = await ApiService.post('chat', {'chatSessionId': widget.chatSessionId, 'chatName': chatName, 'userId': userId, 'message': response.text, 'role': 'model'});
       if (apiResponse.statusCode >= 200 && apiResponse.statusCode < 300) {
         setState(() {
           _isLoading = false;
@@ -258,9 +215,7 @@ class _ChatScreenState extends State<ChatScreen> {
           _isLoading = false;
         });
         final responseData = jsonDecode(apiResponse.body);
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(responseData["message"])));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(responseData["message"])));
       }
     }
     if (_isAtBottom) {
@@ -279,12 +234,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatHistoryScreen(userId: userId),
-                ),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChatHistoryScreen(userId: userId)));
             },
             icon: const Icon(Icons.history),
           ),
@@ -301,26 +251,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     Expanded(
                       child: Stack(
                         children: [
-                          ListView.builder(
-                            controller: _scrollController,
-                            itemCount: _messages.length,
-                            itemBuilder:
-                                (context, index) =>
-                                    ChatBubble(message: _messages[index]),
-                          ),
+                          ListView.builder(controller: _scrollController, itemCount: _messages.length, itemBuilder: (context, index) => ChatBubble(message: _messages[index])),
                           if (!_isAtBottom)
-                            Positioned(
-                              bottom: 10,
-                              left: 0,
-                              right: 0,
-                              child: Center(
-                                child: FloatingActionButton(
-                                  onPressed: _scrollToBottom,
-                                  child: const Icon(Icons.arrow_downward),
-                                  mini: true,
-                                ),
-                              ),
-                            ),
+                            Positioned(bottom: 10, left: 0, right: 0, child: Center(child: FloatingActionButton(onPressed: _scrollToBottom, child: const Icon(Icons.arrow_downward), mini: true))),
                         ],
                       ),
                     ),
@@ -334,32 +267,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _buildTextComposer() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Theme.of(context).colorScheme.onSurface,
-            width: 1.0,
-          ),
-        ),
-      ),
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 1.0))),
       child: Row(
         children: [
-          Flexible(
-            child: TextField(
-              controller: _textController,
-              onSubmitted: _handleSubmitted,
-              decoration: const InputDecoration.collapsed(
-                hintText: 'Send a message',
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: IconButton(
-              icon: const Icon(Icons.send),
-              onPressed: () => _handleSubmitted(_textController.text),
-            ),
-          ),
+          Flexible(child: TextField(controller: _textController, onSubmitted: _handleSubmitted, decoration: const InputDecoration.collapsed(hintText: 'Send a message'))),
+          Container(margin: const EdgeInsets.symmetric(horizontal: 4.0), child: IconButton(icon: const Icon(Icons.send), onPressed: () => _handleSubmitted(_textController.text))),
         ],
       ),
     );
@@ -377,23 +289,21 @@ class _ChatScreenState extends State<ChatScreen> {
 class ChatMessage {
   final String text;
   final String sender;
+
   ChatMessage({required this.text, required this.sender});
 }
 
 class ChatBubble extends StatelessWidget {
   final ChatMessage message;
+
   const ChatBubble({Key? key, required this.message}) : super(key: key);
 
   void _copyToClipboard(BuildContext context, String text) async {
     try {
       await Clipboard.setData(ClipboardData(text: text));
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Copied to clipboard")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Copied to clipboard")));
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Failed to copy: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to copy: $e")));
     }
   }
 
@@ -404,8 +314,7 @@ class ChatBubble extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Row(
-        mainAxisAlignment:
-            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -413,28 +322,15 @@ class ChatBubble extends StatelessWidget {
             children: [
               Flexible(
                 child: Container(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.7,
-                  ),
+                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                   padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color:
-                        isUser
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.secondary,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
+                  decoration: BoxDecoration(color: isUser ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary, borderRadius: BorderRadius.circular(10.0)),
                   child: SelectableText(message.text),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
-                child: IconButton(
-                  icon: const Icon(Icons.copy, size: 16),
-                  color: Theme.of(context).colorScheme.primary,
-                  onPressed: () => _copyToClipboard(context, message.text),
-                  tooltip: "Copy",
-                ),
+                child: IconButton(icon: const Icon(Icons.copy, size: 16), color: Theme.of(context).colorScheme.primary, onPressed: () => _copyToClipboard(context, message.text), tooltip: "Copy"),
               ),
             ],
           ),
